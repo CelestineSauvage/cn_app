@@ -43,7 +43,7 @@ Son code est situé dans les dossiers:
     - signals.py : exploite le mécanisme de signals de Django et relié donc au évènements de création, édition, ou suppression d'objets Repository
     - urls.py : définition des patterns d'urls spécifique à l'application escapad
     - views.py : définition du code permettant de faire exécuter le script pour un dépôt donné. L'emplacement des fichiers sources et les fichiers générés est défini dans le fichier site_settings.py et expliqué dans la documentation d'installation
-    - utils.py : qqs méthodes utilitaires, notamment celle à qui est délégué l'exécuption du script cnExport.py
+    - utils.py : qqs méthodes utilitaires, notamment celle à qui est délégué l'exécution du script cnExport.py
 - les logs de l'application Django sont situés dans le fichier debug.log dont l'emplacement est défini dans le fichier cn_app/site_settings.py
 - le fichier manage.py n'est pas à modifier à priori (sauf cas avancé)
 
