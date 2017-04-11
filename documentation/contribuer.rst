@@ -19,7 +19,7 @@ Le code d'Escapad est décomposé comme suit:
 Cette partie du code réside dans les dossiers:
 
 - src:
-    - cnExport.py : c'est le script de départ; il amorce le parsing et contrôle les différents exports directemenr (Web) ou via  toEDX.py ou toIMS.py.
+    - cnExport.py : c'est le script de départ; il amorce le parsing et contrôle les différents exports directement (Web) ou via  toEDX.py ou toIMS.py.
     - model.py : contient le modèle; le parsing est amorcé par la création d'un objet Module défini dans ce modèle
     - fromGIF.py : responsable du découpage et du parsing des questions rédigées en GIFT dans les sous-section de type Activité; gère également l'export web des questions
     - utils.py : contient quelques méthodes utilitaires pour l'écriture de fichiers et certains filtres
