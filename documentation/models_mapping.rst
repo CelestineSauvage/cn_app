@@ -20,7 +20,7 @@ au niveau de la sous-section mais sur celui du "component". Voir tableau ci-dess
 +----------------------------+-------------------------------------------+
 | sequential:display\_name   | titre de la sous-section                  |
 +----------------------------+-------------------------------------------+
-| sequential:format          | type de ssection                          |
+| sequential:format          | type de section                          |
 +----------------------------+-------------------------------------------+
 | sequential:graded (T/F)    | en fonction du type                       |
 +----------------------------+-------------------------------------------+
@@ -39,7 +39,7 @@ type défini dans une "grading policy". Pour Esc@Pad :
 
 Ensuite chaque ``sequential`` peut avoir plusieurs ``vertical`` dénommés
 "Unité" dans l'interface, mais dans Esc@pad il n'y a qu'une 'unité' par
-sous-section, et l'on se tient à un type de composant par Unité sauf pour les cours avec video qui auront un composant "Html" précédé d'un composant "cn-video" utilisant le plugin spécifique développé pour l'occasion `xblock-cnvideo <https://github.com/CultureNumerique/xblock-cnvideo>`__
+sous-section, et l'on se tient à un type de composant par Unité sauf pour les cours avec vidéo qui auront un composant "Html" précédé d'un composant "cn-video" utilisant le plugin spécifique développé pour l'occasion `xblock-cnvideo <https://github.com/CultureNumerique/xblock-cnvideo>`__
 
 Chaque unité peut ensuite contenir différents composant EDX qui seront
 déterminé selon le contenu de la sous-section:
