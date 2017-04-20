@@ -20,7 +20,7 @@ au niveau de la sous-section mais sur celui du "component". Voir tableau ci-dess
 +----------------------------+-------------------------------------------+
 | sequential:display\_name   | titre de la sous-section                  |
 +----------------------------+-------------------------------------------+
-| sequential:format          | type de section                          |
+| sequential:format          | type de section                           |
 +----------------------------+-------------------------------------------+
 | sequential:graded (T/F)    | en fonction du type                       |
 +----------------------------+-------------------------------------------+
@@ -59,13 +59,13 @@ Stratégie de notation
 
 Avec EDX il est possible de défninir :
 
--  Le critère de "passation" du cours, ie la note globale minimale
--  différents types d'exercices notés (ou de notation)
--  pour chaque type:
-  -  nombre mini à passer pour être évalué
-  -  nombre d'exo que l'on peut sauter
-  -  poids dans note globale
-  -  nom et nom de code
+*  Le critère de "passation" du cours, ie la note globale minimale
+*  différents types d'exercices notés (ou de notation)
+*  pour chaque type:
+    *  nombre mini à passer pour être évalué
+    *  nombre d'exo que l'on peut sauter
+    *  poids dans note globale
+    *  nom et nom de code
 
 Tout ceci est défini dans le fichier de template
 `templates/toEDX/policies/course/grading_policy.json <../templates/toEDX/policies/course/grading_policy.json>`__

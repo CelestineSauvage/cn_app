@@ -101,12 +101,13 @@ Amélioration du parser
 ----------------------
 
 Il s'agit ici de consolider le code de la partie parser (cf dossier `src`) selon différents aspects:
+
 - intégrer la librairie [pygiftparser](https://github.com/mtommasi/pygiftparser) afin de remplacer `fromGIFT.py` pour le parsing du GIFT.
 - étendre la librairie [pygiftparser](https://github.com/mtommasi/pygiftparser) pour augmenter la couverture de la spécification GIFT (aujourd'hui partielle)
 - proposer une version du script `cnExport.py` pour produire un site mono-module sans page d'accueil
 - homégénéiser et factoriser le code de génération des archives:
-  - passer la génération de l'IMS-CC via un template Jinja2 (comme pour le web et EDX)
-  - coder en objet ces "Exporters" qui peuvent se décliner en IMSExporter, WebExporter, etc.
+    - passer la génération de l'IMS-CC via un template Jinja2 (comme pour le web et EDX)
+    - coder en objet ces "Exporters" qui peuvent se décliner en IMSExporter, WebExporter, etc.
 
 
 Améliorer application Web (sous Django)
