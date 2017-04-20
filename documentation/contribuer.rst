@@ -64,7 +64,7 @@ Pour lancer les tests:
 - ``$ python tests.py``
 
 
-Tests globaux controllant le résultat
+Tests globaux contrôlant le résultat
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ce type de test est développé dans le module :mod:`tests`:
