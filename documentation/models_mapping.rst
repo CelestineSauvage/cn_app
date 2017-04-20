@@ -62,10 +62,10 @@ Avec EDX il est possible de défninir :
 -  Le critère de "passation" du cours, ie la note globale minimale
 -  différents types d'exercices notés (ou de notation)
 -  pour chaque type:
--  nombre mini à passer pour être évalué
--  nombre d'exo que l'on peut sauter
--  poids dans note globale
--  nom et nom de code
+  -  nombre mini à passer pour être évalué
+  -  nombre d'exo que l'on peut sauter
+  -  poids dans note globale
+  -  nom et nom de code
 
 Tout ceci est défini dans le fichier de template
 `templates/toEDX/policies/course/grading_policy.json <../templates/toEDX/policies/course/grading_policy.json>`__
