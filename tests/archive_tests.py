@@ -3,7 +3,9 @@
 
 from io import open
 import json
+from lxml import etree
 import shutil
+from bs4 import BeautifulSoup
 import unittest
 from collections import namedtuple
 from StringIO import StringIO
@@ -21,24 +23,110 @@ from src import model,utils,toEDX,toIMS
 
 TEST_EDX_DIR = "./testEDX"
 
+def setUp():
+    """
+    Build EDX folder based on coursTest
+    """
+    with open("coursTest/module1/module_test.md", encoding='utf-8') as sample_file:
+        self.m = model.Module(sample_file, "tests", "http://culturenumerique.univ-lille3.fr")
+        self.m.toHTML()
+        self.m_json = json.loads(self.m.toJson(), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        if os.path.isdir(TEST_EDX_DIR):
+            shutil.rmtree(TEST_EDX_DIR)
+        (self.m).edx_archive_path = toEDX.generateEDXArchive(self.m, TEST_EDX_DIR)
+        sample_file.close()
+
 class EDXArchiveTestCase(unittest.TestCase):
 
-    def setUp(self):
-        with open("coursTest/module1/module_test.md", encoding='utf-8') as sample_file:
-            self.m = model.Module(sample_file, "tests", "http://culturenumerique.univ-lille3.fr")
-            self.m.toHTML()
-            self.m_json = json.loads(self.m.toJson(), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
-            if os.path.isdir(TEST_EDX_DIR):
-                shutil.rmtree(TEST_EDX_DIR)
-            (self.m).edx_archive_path = toEDX.generateEDXArchive(self.m, TEST_EDX_DIR)
 
+    def testCreationDossierEdx(self):
+        """
+        Check if all directories and files are created
+        """
+        self.assertTrue(os.path.isdir(TEST_EDX_DIR),"dir "+TEST_EDX_DIR+" don't exist")
+        self.assertTrue(os.path.exists(TEST_EDX_DIR+'/tests_edx.tar.gz'), "tar.gz don't exist")
+        self.assertTrue(os.path.isdir(TEST_EDX_DIR+'/EDX'), "dir EDX don't exist")
+        self.assertTrue(os.path.exists(TEST_EDX_DIR+'/EDX/course.xml'), "file course.xml don't exist")
+        self.assertTrue(os.path.exists(TEST_EDX_DIR+'/EDX/about/overview.html'), "file overview.html don't exist")
+        self.assertTrue(os.path.exists(TEST_EDX_DIR+'/EDX/assets/assets.xml'), "file assets.xml don't exist")
+        self.assertTrue(os.path.isdir(TEST_EDX_DIR+'/EDX/html'), "dir html don't exist")
+        self.assertTrue(os.path.exists(TEST_EDX_DIR+'/EDX/info/updates.html'), "file updates.html don't exist")
+        self.assertTrue(os.path.isdir(TEST_EDX_DIR+'/EDX/policies'), "dir policies don't exist")
+        self.assertTrue(os.path.isdir(TEST_EDX_DIR+'/EDX/problem'), "dir problem don't exist")
 
-    def runEDX(self):
-        pass
+        print("[EDXArchiveTestCase]-- check_creation_dossier_edx OK --")
 
+    def testNbWebContent(self):
+        """
+        Check the correct number of WebContent's courses
+        """
+        list_files_html = os.listdir(TEST_EDX_DIR+'/EDX/html')
+        self.assertEqual(len(list_files_html), 6, "Not the same numbers of HTML's files")
+        print("[EDXArchiveTestCase]-- check_nb_web_content OK --")
+
+    def testNbProblems(self):
+        """
+        Check the correct number of Activities
+        """
+        list_files_problems = os.listdir(TEST_EDX_DIR+'/EDX/problem')
+        self.assertEqual(len(list_files_problems), 20, "Not the same numbers of Problem's files")
+
+        print("[EDXArchiveTestCase]-- check_nb_problems OK --")
+
+    def testCntCours(self):
+        """
+        Check the file course.xml
+        """
+        cpt_act = 0
+        cpt_comp = 0
+        cpt_act_av = 0
+        #transform xml files in XLM object Python
+        tree = etree.parse(TEST_EDX_DIR+'/EDX/course.xml')
+        #Collect all sequential tag in tree
+        list_seq = tree.xpath("/course/chapter/sequential")
+        for i,vert in enumerate(list_seq):
+            # Check if sequential have only one vertical tag
+            self.assertEquals(len(vert),1,"Lenght vertical n°"+str(i)+" > 1")
+            fm = vert.attrib.get("format")
+            if fm == "Activite":
+                cpt_act += 1
+            elif fm == "Activite Avancee":
+                cpt_act_av += 1
+            elif fm == "Comprehension":
+                cpt_comp += 1
+        #Collect all chapter tag in tree
+        list_chap = tree.xpath("/course/chapter")
+        #Collect all problem tag in tree
+        list_pro = tree.xpath("/course/chapter/sequential/vertical/problem")
+        #Collect all html tag in tree
+        list_html = tree.xpath("/course/chapter/sequential/vertical/html")
+
+        #ASSERTS XML TREE
+        self.assertEquals(len(list_pro),20,"Not the same nb of problems")
+        self.assertEquals(len(list_chap),4,"Not the same nb of chapters")
+        self.assertEquals(len(list_seq),15,"Not the same nb of sequentials")
+        self.assertEquals(len(list_html),6,"Not the same nb of webcontent")
+
+        #ASSERTS CNT
+        self.assertEquals(cpt_act,3,"Not the same nb of Activite")
+        self.assertEquals(cpt_act_av,2,"Not the same nb of ActiviteAvancee")
+        self.assertEquals(cpt_comp,4,"Not the same nb of Comprehension")
+
+        print("[EDXArchiveTestCase]-- check_nb_cnt_cours OK --")
+
+    def testCNVideo(self):
+        tree = etree.parse(TEST_EDX_DIR+'/EDX/course.xml')
+        root = tree.getroot()
+        l_video = root.iter('cnvideo')
+        vid = l_video.next()
 
     def runTest(self):
-        self.runEDX()
+        setUp()
+        self.testCreationDossierEdx()
+        self.testNbWebContent()
+        self.testNbProblems()
+        self.testCntCours()
+        # self.testCNVideo()
 
 
 # Main
