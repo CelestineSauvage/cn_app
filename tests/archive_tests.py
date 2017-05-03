@@ -23,18 +23,21 @@ from src import model,utils,toEDX,toIMS
 
 TEST_EDX_DIR = "./testEDX"
 
+
 def setUp():
     """
     Build EDX folder based on coursTest
     """
     with open("coursTest/module1/module_test.md", encoding='utf-8') as sample_file:
-        self.m = model.Module(sample_file, "tests", "http://culturenumerique.univ-lille3.fr")
-        self.m.toHTML()
-        self.m_json = json.loads(self.m.toJson(), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        global m
+        m = model.Module(sample_file, "tests", "http://culturenumerique.univ-lille3.fr")
+        m.toHTML()
+        m_json = json.loads(m.toJson(), object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
         if os.path.isdir(TEST_EDX_DIR):
             shutil.rmtree(TEST_EDX_DIR)
-        (self.m).edx_archive_path = toEDX.generateEDXArchive(self.m, TEST_EDX_DIR)
+        m.edx_archive_path = toEDX.generateEDXArchive(m, TEST_EDX_DIR)
         sample_file.close()
+        del m_json,sample_file
 
 class EDXArchiveTestCase(unittest.TestCase):
 
@@ -82,8 +85,9 @@ class EDXArchiveTestCase(unittest.TestCase):
         cpt_act_av = 0
         #transform xml files in XLM object Python
         tree = etree.parse(TEST_EDX_DIR+'/EDX/course.xml')
-        #Collect all sequential tag in tree
+        #Collect all sequential tag in tree & test existence
         list_seq = tree.xpath("/course/chapter/sequential")
+        self.assertNotEquals(list_seq, [])
         for i,vert in enumerate(list_seq):
             # Check if sequential have only one vertical tag
             self.assertEquals(len(vert),1,"Lenght vertical n°"+str(i)+" > 1")
@@ -96,10 +100,14 @@ class EDXArchiveTestCase(unittest.TestCase):
                 cpt_comp += 1
         #Collect all chapter tag in tree
         list_chap = tree.xpath("/course/chapter")
+        self.assertNotEquals(list_chap, [])
         #Collect all problem tag in tree
         list_pro = tree.xpath("/course/chapter/sequential/vertical/problem")
+        self.assertNotEquals(list_pro, [])
         #Collect all html tag in tree
         list_html = tree.xpath("/course/chapter/sequential/vertical/html")
+        self.assertNotEquals(list_html, [])
+
 
         #ASSERTS XML TREE
         self.assertEquals(len(list_pro),20,"Not the same nb of problems")
@@ -115,20 +123,34 @@ class EDXArchiveTestCase(unittest.TestCase):
         print("[EDXArchiveTestCase]-- check_nb_cnt_cours OK --")
 
     def testCNVideo(self):
+        """
+        Test if video is correctly formating and insert into course.xml
+        """
         tree = etree.parse(TEST_EDX_DIR+'/EDX/course.xml')
         root = tree.getroot()
         l_video = root.iter('cnvideo')
         vid = l_video.next()
+        self.assertEquals(vid.attrib.get('url_name'),'1-1-1-https-vimeo-com-122104210')
+        vid = l_video.next()
+        self.assertEquals(vid.attrib.get('url_name'),'1-3-1-https-vimeo-com-122104443')
+        vid = l_video.next()
+        self.assertEquals(vid.attrib.get('url_name'),'2-3-1-https-vimeo-com-122104499')
+        vid = l_video.next()
+        self.assertEquals(vid.attrib.get('url_name'),'1-4-1-https-vimeo-com-122104174')
+        self.assertRaises(l_video.next(),"Too much videos")
+
+    # def testProblem(self):
+    #     multichoice =
 
     def runTest(self):
-        setUp()
         self.testCreationDossierEdx()
         self.testNbWebContent()
         self.testNbProblems()
         self.testCntCours()
-        # self.testCNVideo()
+        self.testCNVideo()
 
 
 # Main
 if __name__ == '__main__':
+    setUp()
     unittest.main(verbosity=1)
