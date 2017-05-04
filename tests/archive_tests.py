@@ -1,14 +1,15 @@
- #!/usr/bin/ python
+ #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from io import open
 import json
+import mock
 from lxml import etree
 import shutil
 from bs4 import BeautifulSoup
 import unittest
 from collections import namedtuple
-from StringIO import StringIO
+from six.moves import StringIO
 from jinja2 import Template, Environment, FileSystemLoader
 # Path hack for getting access to src python modules
 import sys, os
@@ -137,10 +138,9 @@ class EDXArchiveTestCase(unittest.TestCase):
         self.assertEquals(vid.attrib.get('url_name'),'2-3-1-https-vimeo-com-122104499')
         vid = l_video.next()
         self.assertEquals(vid.attrib.get('url_name'),'1-4-1-https-vimeo-com-122104174')
-        self.assertRaises(l_video.next(),"Too much videos")
 
     # def testProblem(self):
-    #     multichoice =
+    #     class Q
 
     def runTest(self):
         self.testCreationDossierEdx()

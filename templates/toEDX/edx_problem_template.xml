@@ -1,5 +1,6 @@
 <!-- DEBUT problem {{q.title}} -->
-<problem display_name="{{ q.title }}" {% if q.type == "MULTICHOICE" or q.type == "TRUEFALSE" or q.type == 'MULTIANSWER' %}max_attempts="1"{%endif%}>
+<problem display_name="{{ q.title }}">
+  {% if q.type == "MULTICHOICE" or q.type == "TRUEFALSE" or q.type == 'MULTIANSWER' %}max_attempts="1"{%endif%}>
     <legend>
         {{ q.text|tohtml }}
     </legend>
@@ -44,4 +45,3 @@
     {% endif %}
 </problem>
 <!-- FIN problem {{q.title}} -->
-{#<demandhint>        <hint>A fruit is the fertilized ovary from a flower.</hint>        <hint>A fruit contains seeds of the plant.</hint>    </demandhint> #}
