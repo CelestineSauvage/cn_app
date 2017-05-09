@@ -254,7 +254,7 @@ class AnyActivity(Subsection):
             # post-process Gift source replacing markdown formated questions text by html equivalent
             if question.text_format in (("markdown")):
                 question.md_src_to_html()
-                return self.html_src
+        return self.html_src
 
 
     def toEdxProblemsList(self):
